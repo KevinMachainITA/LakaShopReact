@@ -1,0 +1,250 @@
+import React, {useState} from 'react'
+import useStore from '../hooks/useStore'
+
+function ModalNewProduct() {
+
+    const { categories, createProduct , handleClickModalNewProduct} = useStore()
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        price: '',
+        discount: '',
+        size: '',
+        stock:'',
+        image: '',
+        category_id: '', // Agregamos un campo para la categoría seleccionada
+      });
+      const [errors, setErrors] = useState({});
+
+    const handleInputChange = (e) => {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        });
+      };
+    
+      const handleCategoryChange = (e) => {
+        setFormData({
+          ...formData,
+          category_id: e.target.value,
+        });
+      };
+      
+      const validateForm = () => {
+        const newErrors = {};
+        // Validar cada campo y agregar errores al objeto newErrors si es necesario
+        if (!formData.name.trim()) {
+            newErrors.name = 'Name is required';
+        }
+        if (!formData.description.trim()) {
+            newErrors.description = 'Description is required';
+        }
+        if (!formData.price.trim()) {
+            newErrors.price = 'Price is required';
+        }
+        if (!formData.discount.trim()) {
+            newErrors.discount = 'Discount is required';
+        }
+        if (!formData.stock.trim()) {
+            newErrors.stock = 'Stock is required';
+        }
+        if (!formData.image.trim()) {
+            newErrors.image = 'Image is required';
+        }
+        if (!formData.category_id.trim()) {
+            newErrors.category_id = 'Category is required';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        const isValid = validateForm();
+
+        if (isValid) {
+            createProduct(formData)
+            handleClickModalNewProduct() 
+        }
+
+      };
+
+    return (
+        <>
+            <form className='w-[40rem]'
+                onSubmit={handleSubmit}
+            >
+                <p className="mb-4 text-center font-semibold">New Product</p>
+                
+                <div className="flex flex-col">
+                    <label 
+                        htmlFor="name"
+                        className="my-2"
+                    >Name</label>
+                    <input 
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className={`mb-4 p-2 border border-black rounded-lg ${
+                            errors.name ? 'border-red-500' : ''
+                        }`}
+                    />
+                </div>
+
+                <div className="flex flex-col">
+                    <label 
+                        htmlFor="description"
+                        className="my-2"
+                    >Description</label>
+                    <input 
+                        type="text"
+                        name="description"
+                        id="description"
+                        value={formData.description}
+                        onChange={handleInputChange}
+                        className={`mb-4 p-2 border border-black rounded-lg ${
+                            errors.name ? 'border-red-500' : ''
+                        }`}
+                    />
+                </div>
+                
+                <div className='flex justify-between gap-2'>
+                    <div className="flex flex-col w-1/3">
+                        <label 
+                            htmlFor="price"
+                            className="my-2"
+                        >Pirce</label>
+                        <input 
+                            type="number"
+                            max="99999"
+                            min="1"
+                            name="price"
+                            id="price"
+                            value={formData.price}
+                            onChange={handleInputChange}
+                            className={`mb-4 p-2 border border-black rounded-lg ${
+                                errors.name ? 'border-red-500' : ''
+                            }`}
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-1/3">
+                        <label 
+                            htmlFor="discount"
+                            className="my-2"
+                        >Discount</label>
+                        <input
+                            type="number"
+                            max="100"
+                            min="0"
+                            name="discount"
+                            id="discount"
+                            value={formData.discount}
+                            onChange={handleInputChange}
+                            className={`mb-4 p-2 border border-black rounded-lg ${
+                                errors.name ? 'border-red-500' : ''
+                            }`}
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-1/3">
+                        <label 
+                            htmlFor="size"
+                            className="my-2"
+                        >Size</label>
+                        <input 
+                            type="number"
+                            max="99"
+                            min="1"
+                            name="size"
+                            id="size"
+                            value={formData.size}
+                            onChange={handleInputChange}
+                            className={`mb-4 p-2 border border-black rounded-lg ${
+                                errors.name ? 'border-red-500' : ''
+                            }`}
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-1/3">
+                        <label 
+                            htmlFor="stock"
+                            className="my-2"
+                        >Stock</label>
+                        <input 
+                            type="number"
+                            max="1000"
+                            min="1"
+                            name="stock"
+                            id="stock"
+                            value={formData.stock}
+                            onChange={handleInputChange}
+                            className={`mb-4 p-2 border border-black rounded-lg ${
+                                errors.name ? 'border-red-500' : ''
+                            }`}
+                        />
+                    </div>
+                </div>
+
+                <div className="flex flex-col">
+                    <label 
+                        htmlFor="image"
+                        className="my-2"
+                    >Image</label>
+                    <input 
+                        type="text"
+                        name="image"
+                        id="image"
+                        value={formData.image}
+                        onChange={handleInputChange}
+                        className={`mb-4 p-2 border border-black rounded-lg ${
+                            errors.name ? 'border-red-500' : ''
+                        }`}
+                    />
+                </div>
+                
+                <div className="flex flex-col">
+                    <label htmlFor="category" className="my-2">
+                        Category
+                    </label>
+                    <select
+                        name="category"
+                        id="category"
+                        value={formData.category_id}
+                        onChange={handleCategoryChange}
+                        className={`mb-4 p-2 border border-black rounded-lg ${
+                            errors.name ? 'border-red-500' : ''
+                        }`}
+                    >
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <input 
+                    className='hover:cursor-pointer text-white text-center w-full uppercase bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none'
+                    type='submit'
+                    value='Create'
+                    />
+                
+                <button
+                    className='focus:outline-none text-white w-full uppercase bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
+                    type='button'
+                    onClick={() => handleClickModalNewProduct()}
+                >
+                    cancel
+                </button>
+            </form>
+        </>
+    )
+}
+
+export default ModalNewProduct
