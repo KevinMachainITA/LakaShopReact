@@ -11,6 +11,8 @@ function ModalUser() {
   const [phone, setPhone] = useState(user.phone);
   const [email, setEmail] = useState(user.email);
 
+  const [errors, setErrors] = useState({});
+
   const handleCheckboxChange = () => {
     setIsAdminChecked(!isAdminChecked);
   };
@@ -31,21 +33,44 @@ function ModalUser() {
     setEmail(event.target.value)
   }
 
+  const validateForm = () => {
+    const newErrors = {};
+  
+    if (!name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    if (!address.trim()) {
+      newErrors.address = 'Address is required';
+    }
+    if (!phone.trim()) {
+      newErrors.phone = 'Phone is required';
+    }
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    }
+  
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    const updatedUserData = {
-      id: user.id,
-      admin: isAdminChecked,
-      name,
-      shipping_address: address,
-      phone,
-      email,
-    };
+    const isValid = validateForm();
 
-    updateUser(updatedUserData);
-    
-    handleClickModalUser();
+    if (isValid){
+      const updatedUserData = {
+        id: user.id,
+        admin: isAdminChecked,
+        name,
+        shipping_address: address,
+        phone,
+        email,
+      };
+  
+      updateUser(updatedUserData);
+      handleClickModalUser();
+    }
   };
 
   return (
@@ -66,7 +91,7 @@ function ModalUser() {
               id="name"
               value={name}
               onChange={handleNameChange}
-              className="mb-4 p-2 border border-black rounded-lg"
+              className={`mb-4 p-2 border border-black rounded-lg ${errors.name ? 'border-red-500' : ''}`}
             />
           </div>
 
@@ -81,7 +106,7 @@ function ModalUser() {
               id="address"
               value={address}
               onChange={handleAddressChange}
-              className="mb-4 p-2 border border-black rounded-lg"
+              className={`mb-4 p-2 border border-black rounded-lg ${errors.address ? 'border-red-500' : ''}`}
             />
           </div>
 
@@ -96,7 +121,7 @@ function ModalUser() {
               id="phone"
               value={phone}
               onChange={handlePhoneChange}
-              className="mb-4 p-2 border border-black rounded-lg"
+              className={`mb-4 p-2 border border-black rounded-lg ${errors.phone ? 'border-red-500' : ''}`}
             />
           </div>
 
@@ -111,7 +136,7 @@ function ModalUser() {
               id="email"
               value={email}
               onChange={handleEmailChange}
-              className="mb-4 p-2 border border-black rounded-lg"
+              className={`mb-4 p-2 border border-black rounded-lg ${errors.email ? 'border-red-500' : ''}`}
             />
           </div>
           
