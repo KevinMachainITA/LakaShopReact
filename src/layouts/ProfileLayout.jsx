@@ -4,6 +4,7 @@ import useStore from '../hooks/useStore'
 import ProfileNavbar from '../components/ProfileNavbar'
 import Modal from 'react-modal'
 import ModalUser from '../components/ModalUser'
+import ModalUserProfile from '../components/ModalUserProfile'
 
 const customStyles = {
     content: {
@@ -30,7 +31,7 @@ function ProfileLayout() {
             </div>
 
             <Modal isOpen={modalUser} style={customStyles}>
-                <ModalUser></ModalUser>
+                <ModalUserProfile></ModalUserProfile>
             </Modal>
         </>
     )

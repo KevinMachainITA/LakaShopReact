@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 function Navbar() {
 
     const {categories, currentCategory} = useStore()
-    const {logout} = useAuth({middleware: 'auth'})
+    const {user, logout} = useAuth({middleware: 'auth'})
 
     return (
     <>
@@ -15,8 +15,12 @@ function Navbar() {
             <div className="w-full container mx-auto flex flex-wrap items-center justify-between">
                 <nav>
                     <ul className="flex items-center justify-between font-semibold text-sm text-white uppercase no-underline">
-                        <li><a className="hover:text-gray-200 hover:underline px-4" href="#">Shop</a></li>
-                        <li><a className="hover:text-gray-200 hover:underline px-4" href="#">About</a></li>
+                        <li><Link className="hover:text-gray-200 hover:underline px-4" to='/'>Shop</Link></li>
+                        {user && user.admin ? (
+                            <li><Link className="hover:text-gray-200 hover:underline px-4" to='/admin'>Admin</Link></li>
+                        ) : (
+                            <li><Link className="hover:text-gray-200 hover:underline px-4" to='/'>About</Link></li>
+                        )}
                     </ul>
                 </nav>
                 <div className="flex items-center gap-1 text-lg no-underline text-white pr-6">

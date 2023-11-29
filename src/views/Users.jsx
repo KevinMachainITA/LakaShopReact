@@ -29,7 +29,7 @@ function Users() {
           Authorization: `Bearer ${token}`
         }
       });
-      mutate(response.data, false); // No activa la recarga automática después de la mutación
+      mutate(response.data, false); // Does not activate auto reload after mutation
     } catch (error) {
       console.error('Error searching products:', error);
     }

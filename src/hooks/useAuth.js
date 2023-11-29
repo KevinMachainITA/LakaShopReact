@@ -25,11 +25,8 @@ export const useAuth = ({middleware, url}) => {
     const login = async (form, setErrors) => {
         try {
             const { data } = await customerAxios.post('/api/login', form);
-            
             setErrors([]);
             setTokenFunction(data.token)
-            
-            //setTokenFunction(data.token)
         } catch (error) {
             setErrors(Object.values(error.response.data.errors));
             console.log(error);

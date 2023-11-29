@@ -5,12 +5,12 @@ import { formatMoney } from '../helpers'
 
 function Cart() {
 
-  const {cart, total, userCart, handleClickModalPurchase, handleClickShowCart} = useStore()
+  const {cart, total, userCart, handleClickModalPurchase, handleShowCart} = useStore()
 
   const checkCart = () => cart.length === 0
 
   useEffect(() => {
-    handleClickShowCart();
+    handleShowCart();
   }, []); 
 
   return (
