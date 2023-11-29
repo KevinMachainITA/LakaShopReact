@@ -7,6 +7,7 @@ import ModalUser from '../components/ModalUser';
 import ModalNewProduct from '../components/ModalNewProduct';
 import useStore from '../hooks/useStore';
 import ModalOrder from '../components/ModalOrder';
+import ModalEditProduct from '../components/ModalEditProduct';
 
 const customStyles = {
     content: {
@@ -21,7 +22,7 @@ const customStyles = {
 
 function AdminLayout() {
 
-    const {modalUser, modalNewProduct, modalOrder} = useStore();
+    const {modalUser, modalNewProduct, modalOrder, modalEditProduct} = useStore();
     const [loading, setLoading] = useState(true);
     useAuth({middleware: 'admin'})
 
@@ -49,6 +50,10 @@ function AdminLayout() {
 
             <Modal isOpen={modalNewProduct} style={customStyles}>
                 <ModalNewProduct></ModalNewProduct>
+            </Modal>
+
+            <Modal isOpen={modalEditProduct} style={customStyles}>
+                <ModalEditProduct></ModalEditProduct>
             </Modal>
 
             <Modal isOpen={modalOrder} style={customStyles}>

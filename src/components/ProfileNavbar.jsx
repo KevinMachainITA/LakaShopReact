@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
-import {Link, useLocation} from 'react-router-dom'
+import useStore from '../hooks/useStore'
+import {Link} from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 function ProfileNavbar() {
 
+    const {handleClickProfile, currentProfile} = useStore()
     const {user, error, logout} = useAuth({middleware: 'auth'})
-    const location = useLocation();
-    const [selectedLink, setSelectedLink] = useState(location.pathname);
 
     return (
         <>
@@ -52,19 +52,15 @@ function ProfileNavbar() {
                 <div className="w-full container mx-auto flex flex-col sm:flex-row items-center justify-center text-sm font-bold uppercase mt-0 px-6 py-2 gap-10">
                     <Link
                         to="/profile"
-                        onClick={() => handleLinkClick('/profile')}
-                        className={`${
-                        selectedLink === '/profile' ? 'bg-blue-800 text-white scale-125' : ''
-                        } transition duration-500 rounded py-2 px-4 mx-2 uppercase`}
+                        onClick={()=>handleClickProfile(false)}
+                        className={`${currentProfile === false ? "bg-blue-800 text-white scale-125":""} transition duration-500 rounded py-2 px-4 mx-2 uppercase`}
                     >
                         Profile
                     </Link>
                     <Link
                         to="/profile/orders"
-                        onClick={() => handleLinkClick('/profile/orders')}
-                        className={`${
-                        selectedLink === '/profile/orders' ? 'bg-blue-800 text-white scale-125' : ''
-                        } transition duration-500 rounded py-2 px-4 mx-2 uppercase`}
+                        onClick={()=>handleClickProfile(true)}
+                        className={`${currentProfile === true ? "bg-blue-800 text-white scale-125":""} transition duration-500 rounded py-2 px-4 mx-2 uppercase`}
                     >
                         Orders
                     </Link>

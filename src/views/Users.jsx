@@ -5,7 +5,7 @@ import useStore from '../hooks/useStore'
 
 function Users() {
 
-  const {handleClickModalUser, handleSetUser} = useStore()
+  const {handleClickModalUser, handleSetUser, token} = useStore()
   const [searchTerm, setSearchTerm] = useState('');
 
   const fetcherWithToken = async (url, token) => {
@@ -16,7 +16,6 @@ function Users() {
     }).then((res) => res.data);
   };
 
-  const token = localStorage.getItem('AUTH_TOKEN');
   const { data, error, mutate } = useSWR('/api/users-index', () => fetcherWithToken('/api/users-index', token), {
     refreshInterval: searchTerm ? null : 5000,
     revalidateOnFocus: false,
@@ -24,7 +23,6 @@ function Users() {
   });
 
   const handleSearch = async () => {
-    const token = localStorage.getItem('AUTH_TOKEN');
     try {
       const response = await customerAxios.post('/api/users-search', { searchTerm }, {
         headers: {

@@ -9,17 +9,26 @@ const StoreProvider = ({children}) => {
 
     const [categories, setCategories] = useState([])
     const [currentCategory, setCurrentCategory] = useState({})
+    const [currentProfile, setCurrentProfile] = useState(false)
     const [modal, setModal] = useState(false)
     const [modalUser, setModalUser] = useState(false)
     const [modalNewProduct, setModalNewProduct] = useState(false)
+    const [modalEditProduct, setModalEditProduct] = useState(false)
     const [modalOrder, setModalOrder] = useState(false)
     const [modalPurchase, setModalPurchase] = useState(false)
     const [product, setProduct] = useState({})
+    const [productEdit, setProductEdit] = useState({})
     const [user, setUser] = useState({})
     const [order, setOrder] = useState ({})
     const [cart, setCart] = useState([])
     const [userCart, setUserCart] = useState({})
     const [total, setTotal] = useState(0)
+
+    const [token, setAuxToken] = useState('');
+
+    const setTokenFunction = (token) => {
+        setAuxToken(token)
+    }
 
     const getCategories = async () => {
         try {
@@ -34,6 +43,12 @@ const StoreProvider = ({children}) => {
     const handleClickCategory = id => {
         const category = categories.filter(category => category.id === id)[0]
         setCurrentCategory(category)
+    }
+
+    const handleClickProfile = flag => {
+        if(flag !== currentProfile){
+            setCurrentProfile(!currentProfile)
+        }
     }
 
     const handleClickModal = () => {
@@ -52,12 +67,20 @@ const StoreProvider = ({children}) => {
         setModalNewProduct(!modalNewProduct)
     }
 
+    const handleClickModalEditProduct = () => {
+        setModalEditProduct(!modalEditProduct)
+    }
+
     const handleClickModalPurchase = () => {
         setModalPurchase(!modalPurchase)
     }
 
     const handleSetProduct = product => {
         setProduct(product)
+    }
+
+    const handleSetProductEdit = product => {
+        setProductEdit(product)
     }
 
     const handleSetUser = user => {
@@ -108,7 +131,7 @@ const StoreProvider = ({children}) => {
     }
 
     const addOrder = async (paymentMethod) => {
-        const token = localStorage.getItem('AUTH_TOKEN');
+        const auxToken = token;
         const payment_method = paymentMethod;
       
         try {
@@ -116,7 +139,7 @@ const StoreProvider = ({children}) => {
                 payment_method,
             }, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${auxToken}`
             }
             });
         
@@ -131,7 +154,7 @@ const StoreProvider = ({children}) => {
     }
 
     const deleteItem = async (id) => {
-        const token = localStorage.getItem('AUTH_TOKEN');
+        const auxToken = token;
         const product_id = id;
       
         try {
@@ -139,7 +162,7 @@ const StoreProvider = ({children}) => {
             product_id,
             }, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${auxToken}`
             }
             });
         
@@ -154,14 +177,15 @@ const StoreProvider = ({children}) => {
       }
 
     const getCart = async () => {
-        const token = localStorage.getItem('AUTH_TOKEN')
+        const auxToken = token;
         try {
             const {data} = await customerAxios('/api/cart-index',
             {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${auxToken}`
                 }
             })
+            console.log(data)
             const cartData = data[0];
             setUserCart(cartData[0])
         } catch (error) {
@@ -170,12 +194,12 @@ const StoreProvider = ({children}) => {
     }
 
     const getCartItems = async () =>{
-        const token = localStorage.getItem('AUTH_TOKEN')
+        const auxToken = token;
         try {
             const {data} = await customerAxios('/api/items-index',
             {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${auxToken}`
                 }
             })
             const cartItems = [];
@@ -203,7 +227,7 @@ const StoreProvider = ({children}) => {
     }
 
     const addItem = async (product) => {
-        const token = localStorage.getItem('AUTH_TOKEN')
+        const auxToken = token;
 
         const cart_id = userCart.id
         const product_id = product.id
@@ -218,7 +242,7 @@ const StoreProvider = ({children}) => {
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${auxToken}`
                 }
             })
             getCartItems()
@@ -228,7 +252,7 @@ const StoreProvider = ({children}) => {
     }
 
     const updateItem = async (product) => {
-        const token = localStorage.getItem('AUTH_TOKEN')
+        const auxToken = token;
 
         const cart_id = userCart.id
         const product_id = product.id
@@ -243,7 +267,7 @@ const StoreProvider = ({children}) => {
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${auxToken}`
                 }
             })
             getCartItems()
@@ -253,12 +277,12 @@ const StoreProvider = ({children}) => {
     }
 
     const updateUser = async (updatedUserData) => {
-        const token = localStorage.getItem('AUTH_TOKEN');
+        const auxToken = token;
         
         try {
             await customerAxios.post('/api/user-update', updatedUserData, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${auxToken}`
                 }
             });
         } catch (error) {
@@ -267,12 +291,12 @@ const StoreProvider = ({children}) => {
     }
 
     const updateOrder = async (formData) => {
-        const token = localStorage.getItem('AUTH_TOKEN');
+        const auxToken = token;
         
         try {
-            const {data} =await customerAxios.post('/api/order-update', formData, {
+            const {data} = await customerAxios.post('/api/order-update', formData, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${auxToken}`
                 }
             });
             console.log(data)
@@ -282,12 +306,12 @@ const StoreProvider = ({children}) => {
     }
 
     const createProduct = async (formData) => {
-        const token = localStorage.getItem('AUTH_TOKEN');
+        const auxToken = token;
         
         try {
             const {data} = await customerAxios.post('/api/products-store', formData, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${auxToken}`
                 }
             });
             console.log(data)
@@ -295,12 +319,30 @@ const StoreProvider = ({children}) => {
             console.log(error)
         }
     }
+
+    const updateProduct = async (formData) => {
+        const auxToken = token;
+        
+        try {
+            const {data} = await customerAxios.post('/api/products-update', formData, {
+                headers: {
+                    Authorization: `Bearer ${auxToken}`
+                }
+            });
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleClickShowCart = () => {
+        getCart();
+        getCartItems();
+    }
     
     useEffect(() => {
-        getCategories()
-        getCart()
-        getCartItems()
-    }, [])
+        getCategories();
+    }, []);
 
     useEffect(() => {
         let newTotal = 0;
@@ -343,7 +385,17 @@ const StoreProvider = ({children}) => {
                 modalOrder,
                 handleClickModalOrder,
                 handleSetOrder,
-                updateOrder
+                updateOrder,
+                handleClickProfile,
+                currentProfile,
+                handleClickShowCart,
+                token,
+                setTokenFunction,
+                modalEditProduct,
+                handleClickModalEditProduct,
+                handleSetProductEdit,
+                productEdit,
+                updateProduct
             }}
         >{children}</StoreContext.Provider>
     )
