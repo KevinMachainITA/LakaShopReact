@@ -1,18 +1,20 @@
 import React, {useState} from 'react'
 import useStore from '../hooks/useStore'
 
-function ModalNewProduct() {
+function ModalEditProduct() {
 
-    const { categories, createProduct , handleClickModalNewProduct} = useStore()
+    const {categories, productEdit, handleClickModalEditProduct, updateProduct} = useStore()
+
     const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        price: '',
-        discount: '',
-        size: '',
-        stock:'',
-        image: '',
-        category_id: '', // Agregamos un campo para la categoría seleccionada
+        id: productEdit.id,
+        name: productEdit.name,
+        description: productEdit.description,
+        price: productEdit.price,
+        discount: productEdit.discount,
+        size: productEdit.size,
+        stock: productEdit.stock.toString(),
+        image: productEdit.image,
+        category_id: productEdit.category_id.toString(), // Agregamos un campo para la categoría seleccionada
       });
     const [errors, setErrors] = useState({});
 
@@ -21,7 +23,7 @@ function ModalNewProduct() {
           ...formData,
           [e.target.name]: e.target.value,
         });
-      };
+    };
     
     const handleCategoryChange = (e) => {
         setFormData({
@@ -68,10 +70,9 @@ function ModalNewProduct() {
         const isValid = validateForm();
 
         if (isValid) {
-            createProduct(formData)
-            handleClickModalNewProduct() 
+            updateProduct(formData)
+            handleClickModalEditProduct()
         }
-
     };
 
     return (
@@ -79,7 +80,7 @@ function ModalNewProduct() {
             <form className='w-[40rem]'
                 onSubmit={handleSubmit}
             >
-                <p className="mb-4 text-center font-semibold">New Product</p>
+                <p className="mb-4 text-center font-semibold">Edit: <span className='font-normal'>{productEdit.name}</span></p>
                 
                 <div className="flex flex-col">
                     <label 
@@ -92,9 +93,7 @@ function ModalNewProduct() {
                         id="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className={`mb-4 p-2 border border-black rounded-lg ${
-                            errors.name ? 'border-red-500' : ''
-                        }`}
+                        className={`mb-4 p-2 border border-black rounded-lg ${errors.name ? 'border-red-500' : ''}`}
                     />
                 </div>
 
@@ -109,9 +108,7 @@ function ModalNewProduct() {
                         id="description"
                         value={formData.description}
                         onChange={handleInputChange}
-                        className={`mb-4 p-2 border border-black rounded-lg ${
-                            errors.description ? 'border-red-500' : ''
-                        }`}
+                        className={`mb-4 p-2 border border-black rounded-lg ${errors.description ? 'border-red-500' : ''}`}
                     />
                 </div>
                 
@@ -129,9 +126,7 @@ function ModalNewProduct() {
                             id="price"
                             value={formData.price}
                             onChange={handleInputChange}
-                            className={`mb-4 p-2 border border-black rounded-lg ${
-                                errors.price ? 'border-red-500' : ''
-                            }`}
+                            className={`mb-4 p-2 border border-black rounded-lg ${errors.price ? 'border-red-500' : ''}`}
                         />
                     </div>
 
@@ -148,9 +143,7 @@ function ModalNewProduct() {
                             id="discount"
                             value={formData.discount}
                             onChange={handleInputChange}
-                            className={`mb-4 p-2 border border-black rounded-lg ${
-                                errors.discount ? 'border-red-500' : ''
-                            }`}
+                            className={`mb-4 p-2 border border-black rounded-lg ${errors.discount ? 'border-red-500' : ''}`}
                         />
                     </div>
 
@@ -167,9 +160,7 @@ function ModalNewProduct() {
                             id="size"
                             value={formData.size}
                             onChange={handleInputChange}
-                            className={`mb-4 p-2 border border-black rounded-lg ${
-                                errors.size ? 'border-red-500' : ''
-                            }`}
+                            className={`mb-4 p-2 border border-black rounded-lg ${errors.size ? 'border-red-500' : ''}`}
                         />
                     </div>
 
@@ -186,9 +177,7 @@ function ModalNewProduct() {
                             id="stock"
                             value={formData.stock}
                             onChange={handleInputChange}
-                            className={`mb-4 p-2 border border-black rounded-lg ${
-                                errors.stock ? 'border-red-500' : ''
-                            }`}
+                            className={`mb-4 p-2 border border-black rounded-lg ${errors.stock ? 'border-red-500' : ''}`}
                         />
                     </div>
                 </div>
@@ -204,9 +193,7 @@ function ModalNewProduct() {
                         id="image"
                         value={formData.image}
                         onChange={handleInputChange}
-                        className={`mb-4 p-2 border border-black rounded-lg ${
-                            errors.image ? 'border-red-500' : ''
-                        }`}
+                        className={`mb-4 p-2 border border-black rounded-lg ${errors.image ? 'border-red-500' : ''}`}
                     />
                 </div>
                 
@@ -219,9 +206,7 @@ function ModalNewProduct() {
                         id="category"
                         value={formData.category_id}
                         onChange={handleCategoryChange}
-                        className={`mb-4 p-2 border border-black rounded-lg ${
-                            errors.category_id ? 'border-red-500' : ''
-                        }`}
+                        className={`mb-4 p-2 border border-black rounded-lg ${errors.category_id ? 'border-red-500' : ''}`}
                     >
                         <option value="">Select a category</option>
                         {categories.map((category) => (
@@ -235,13 +220,13 @@ function ModalNewProduct() {
                 <input 
                     className='hover:cursor-pointer text-white text-center w-full uppercase bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none'
                     type='submit'
-                    value='Create'
+                    value='Edit'
                     />
                 
                 <button
                     className='focus:outline-none text-white w-full uppercase bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
                     type='button'
-                    onClick={() => handleClickModalNewProduct()}
+                    onClick={()=>handleClickModalEditProduct()}
                 >
                     cancel
                 </button>
@@ -250,4 +235,4 @@ function ModalNewProduct() {
     )
 }
 
-export default ModalNewProduct
+export default ModalEditProduct

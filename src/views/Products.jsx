@@ -5,7 +5,7 @@ import useStore from '../hooks/useStore';
 
 function Products() {
 
-    const {handleClickModalNewProduct} = useStore()
+    const {handleClickModalNewProduct, handleClickModalEditProduct, handleSetProductEdit, token} = useStore()
     const [searchTerm, setSearchTerm] = useState('');
 
     const fetcher = (url) => customerAxios(url).then((res) => res.data);
@@ -17,7 +17,7 @@ function Products() {
     });
 
     const handleSearch = async () => {
-        const token = localStorage.getItem('AUTH_TOKEN');
+        
         try {
           const response = await customerAxios.post('/api/products-search', { searchTerm }, {
             headers: {
@@ -122,6 +122,10 @@ function Products() {
                         <button 
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                             type='button'
+                            onClick={()=>{
+                                handleClickModalEditProduct()
+                                handleSetProductEdit(product)
+                            }}    
                             >
                             Edit
                         </button>

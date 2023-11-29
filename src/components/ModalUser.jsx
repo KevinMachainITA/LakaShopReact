@@ -115,18 +115,18 @@ function ModalUser() {
             />
           </div>
           
-          {user.admin && (
-            <label className="relative inline-flex items-center mb-4 cursor-pointer">
-              <input 
-                type="checkbox"
-                checked={isAdminChecked}
-                onChange={handleCheckboxChange}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-              <span className="ml-3 text-sm font-medium text-gray-900">Admin</span>
-            </label>
-          )}
+          
+          <label className="relative inline-flex items-center mb-4 cursor-pointer">
+            <input 
+              type="checkbox"
+              checked={isAdminChecked}
+              onChange={handleCheckboxChange}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            <span className="ml-3 text-sm font-medium text-gray-900">Admin</span>
+          </label>
+          
 
           <input 
             className='hover:cursor-pointer text-white text-center w-full uppercase bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none'

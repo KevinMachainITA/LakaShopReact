@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import useStore from '../hooks/useStore'
-import { formatMoney } from '../helpers'
+import { formatMoney, calculateDiscountedPrice } from '../helpers'
 
 function ModalProduct() {
 
@@ -39,7 +39,7 @@ function ModalProduct() {
 
             <div className='my-2 px-2'>
                 <h1 className='text-center text-lg font-bold uppercase'>{product.name}</h1>
-                <p className='text-center text-base font-semibold'>{formatMoney(product.price)}</p>
+                <p className='text-center text-base font-semibold'>{formatMoney(calculateDiscountedPrice(product.price, product.discount,1))}</p>
                 <div className='flex justify-center items-center gap-4 my-2'>
                     <button
                         type='button'

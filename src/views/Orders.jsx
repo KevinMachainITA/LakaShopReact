@@ -6,7 +6,7 @@ import useStore from '../hooks/useStore'
 
 function Orders() {
 
-    const {handleClickModalOrder, handleSetOrder} = useStore()
+    const {handleClickModalOrder, handleSetOrder, token} = useStore()
     const [searchTerm, setSearchTerm] = useState('');
 
     const fetcherWithToken = async (url, token) => {
@@ -17,7 +17,6 @@ function Orders() {
         }).then((res) => res.data);
     };
 
-    const token = localStorage.getItem('AUTH_TOKEN');
     const { data, error, mutate } = useSWR('/api/order-index', () => fetcherWithToken('/api/order-index', token), {
         refreshInterval: searchTerm ? null : 5000,
         revalidateOnFocus: false,
@@ -25,7 +24,6 @@ function Orders() {
     });
 
     const handleSearch = async () => {
-        const token = localStorage.getItem('AUTH_TOKEN');
         try {
           const response = await customerAxios.post('/api/order-search', { searchTerm }, {
             headers: {
@@ -50,8 +48,6 @@ function Orders() {
             </div>
         )
     }
-
-    console.log(data)
 
     return (
         <>

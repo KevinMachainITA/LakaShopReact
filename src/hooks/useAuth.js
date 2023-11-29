@@ -2,10 +2,12 @@ import { useEffect } from "react"
 import useSWR from "swr"
 import { useNavigate } from "react-router-dom"
 import customerAxios from "../config/axios"
+import useStore from "./useStore"
 
 export const useAuth = ({middleware, url}) => {
 
-    const token = localStorage.getItem('AUTH_TOKEN')
+    const {token, setTokenFunction} = useStore();
+
     const navigate = useNavigate();
 
     const {data: user, error, mutate} = useSWR('/api/user', () =>
@@ -23,11 +25,11 @@ export const useAuth = ({middleware, url}) => {
     const login = async (form, setErrors) => {
         try {
             const { data } = await customerAxios.post('/api/login', form);
-            localStorage.setItem('AUTH_TOKEN', data.token);
-            setErrors([]);
             
-            //Force a page reload after a successful login
-            window.location.reload();
+            setErrors([]);
+            setTokenFunction(data.token)
+            
+            //setTokenFunction(data.token)
         } catch (error) {
             setErrors(Object.values(error.response.data.errors));
             console.log(error);
@@ -37,11 +39,10 @@ export const useAuth = ({middleware, url}) => {
     const register = async (form, setErrors) => {
         try {
             const {data} = await customerAxios.post('/api/register',form)
-            localStorage.setItem('AUTH_TOKEN', data.token)
+            setTokenFunction(data.token)
             setErrors([])
             await mutate()
-            //Force a page reload after a successful login
-            window.location.reload();
+            
           } catch (error) {
             setErrors(Object.values(error.response.data.errors))
             console.log(error)
@@ -55,7 +56,7 @@ export const useAuth = ({middleware, url}) => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            localStorage.removeItem('AUTH_TOKEN')
+            setTokenFunction('')
             await mutate(undefined)
         } catch (error) {
             throw Error(error?.response?.data?.errors)
