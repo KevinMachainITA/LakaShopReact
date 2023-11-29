@@ -7,6 +7,6 @@ export const formatMoney = (number) => {
 export const calculateDiscountedPrice = (price, discount, amount) => {
     const discountedPrice = price - (price * (discount / 100));
     const subtotal = discountedPrice * amount
-    // Redondear el precio con descuento a 2 decimales
+    //Round the discounted price to 2 decimal places
     return subtotal.toFixed(2);
 };

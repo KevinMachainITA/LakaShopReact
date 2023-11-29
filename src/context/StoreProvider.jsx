@@ -335,7 +335,7 @@ const StoreProvider = ({children}) => {
         }
     }
 
-    const handleClickShowCart = () => {
+    const handleShowCart = () => {
         getCart();
         getCartItems();
     }
@@ -388,7 +388,7 @@ const StoreProvider = ({children}) => {
                 updateOrder,
                 handleClickProfile,
                 currentProfile,
-                handleClickShowCart,
+                handleShowCart,
                 token,
                 setTokenFunction,
                 modalEditProduct,

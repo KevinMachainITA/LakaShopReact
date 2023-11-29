@@ -48,7 +48,7 @@ function ProfileOrders() {
                         <th scope="col" className="px-6 py-3">
                             shipping
                         </th>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="px-6 py-3 text-center">
                             Payment method
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -71,22 +71,22 @@ function ProfileOrders() {
                         <td className="px-6 py-4">
                         {order.shipping_address}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-center">
                         {order.payment_method}
                         </td>
                         <td className="px-6 py-4">
                         {order.order_details.map(details =>(
-                            <div key={details.id} className='border rounded-md p-2 my-1'>
-                                <p>{details.product.name}</p>
-                                <p>{formatMoney(details.product_price)}</p>
-                                <p>{details.quantity}</p>
+                            <div key={details.id} className='border-b p-2 my-1'>
+                                <p className='font-bold'>{details.product.name}</p>
+                                <p>Total: <span className='font-bold'>{formatMoney(details.product_price)}</span></p>
+                                <p>Amount: <span className='font-bold'>{details.quantity}</span></p>
                             </div>
                         ))}
                         </td>
-                        <td className="px-6 py-4 max-w-xs">
+                        <td className="px-6 py-4 max-w-xs text-center">
                         {formatMoney(order.total)}
                         </td>
-                        <td className="px-6 py-4 max-w-xs">
+                        <td className="px-6 py-4 max-w-xs text-center">
                         {order.status}
                         </td>
                     </tr>

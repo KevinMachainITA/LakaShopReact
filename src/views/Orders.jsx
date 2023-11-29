@@ -117,10 +117,10 @@ function Orders() {
                             </td>
                             <td className="px-6 py-4">
                             {order.order_details.map(details =>(
-                                <div key={details.id} className='border rounded-md p-2 my-1'>
-                                    <p>{details.product.name}</p>
-                                    <p>{formatMoney(details.product_price)}</p>
-                                    <p>{details.quantity}</p>
+                                <div key={details.id} className='border-b p-2 my-1'>
+                                    <p className='font-bold'>{details.product.name}</p>
+                                    <p>Total: <span className='font-bold'>{formatMoney(details.product_price)}</span></p>
+                                    <p>Amount: <span className='font-bold'>{details.quantity}</span></p>
                                 </div>
                             ))}
                             </td>

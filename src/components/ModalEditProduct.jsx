@@ -14,7 +14,7 @@ function ModalEditProduct() {
         size: productEdit.size,
         stock: productEdit.stock.toString(),
         image: productEdit.image,
-        category_id: productEdit.category_id.toString(), // Agregamos un campo para la categoría seleccionada
+        category_id: productEdit.category_id.toString(), // We add a field for the selected category
       });
     const [errors, setErrors] = useState({});
 
@@ -34,7 +34,7 @@ function ModalEditProduct() {
       
     const validateForm = () => {
         const newErrors = {};
-        // Validar cada campo y agregar errores al objeto newErrors si es necesario
+        // Validate each field and add errors to the new Errors object if necessary
         if (!formData.name.trim()) {
             newErrors.name = 'Name is required';
         }
@@ -61,7 +61,7 @@ function ModalEditProduct() {
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
+        return Object.keys(newErrors).length === 0; // Returns true if there are no errors
     };
 
     const handleSubmit = (e) => {

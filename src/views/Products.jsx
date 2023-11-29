@@ -12,8 +12,8 @@ function Products() {
 
     const { data, error, mutate } = useSWR('/api/products', fetcher, {
         refreshInterval: searchTerm ? null : 5000,
-        revalidateOnFocus: false, // Desactiva la recarga automática al enfocar la ventana del navegador
-        revalidateOnReconnect: false, // Desactiva la recarga automática al reconectar a internet
+        revalidateOnFocus: false, // Disable auto reload when focusing the browser window
+        revalidateOnReconnect: false, // Disable automatic recharge when reconnecting to the internet
     });
 
     const handleSearch = async () => {

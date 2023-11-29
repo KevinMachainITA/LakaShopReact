@@ -15,7 +15,11 @@ function ProfileNavbar() {
                     <nav>
                         <ul className="flex items-center justify-between font-semibold text-sm text-white uppercase no-underline">
                             <li><Link className="hover:text-gray-200 hover:underline px-4" to='/'>Shop</Link></li>
-                            <li><Link className="hover:text-gray-200 hover:underline px-4">About</Link></li>
+                            {user && user.admin ? (
+                                <li><Link className="hover:text-gray-200 hover:underline px-4" to='/admin'>Admin</Link></li>
+                            ) : (
+                                <li><Link className="hover:text-gray-200 hover:underline px-4" to='/'>About</Link></li>
+                            )}
                         </ul>
                     </nav>
                     <div className="flex items-center gap-1 text-lg no-underline text-white pr-6">
